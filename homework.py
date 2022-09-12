@@ -134,8 +134,8 @@ class Swimming(Training):
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
     type_of_activity: type[Training] = {'SWM': Swimming,
-                              'RUN': Running,
-                              'WLK': SportsWalking}
+                                        'RUN': Running,
+                                        'WLK': SportsWalking}
     try:
         return type_of_activity[workout_type](*data)
     except KeyError:  # печать ошибки если workout_type нет в type_of_activity
