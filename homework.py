@@ -136,14 +136,13 @@ def read_package(workout_type: str, data: list) -> Training:
     type_of_activity: type[Training] = {'SWM': Swimming,
                                         'RUN': Running,
                                         'WLK': SportsWalking}
-    try:
-        return type_of_activity[workout_type](*data)
-    except KeyError:  # печать ошибки если workout_type нет в type_of_activity
-        print(f'ValueError: '
-              f'Неизвестный тип тренировки... '
-              f'Допустимые значения: '
-              f'{list(type_of_activity)}'
-              )
+    if workout_type not in type_of_activity:  # проверка соответствия данных
+        raise ValueError(f'ValueError: '
+                         f'Неизвестный тип тренировки... '
+                         f'Допустимые значения: '
+                         f'{list(type_of_activity)}'
+                         )
+    return type_of_activity[workout_type](*data)
 
 
 def main(training: Training) -> None:
