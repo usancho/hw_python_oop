@@ -1,5 +1,5 @@
+from __future__ import annotations
 from dataclasses import asdict, dataclass
-from typing import Type
 
 
 @dataclass
@@ -47,7 +47,7 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        raise NotImplementedError
+        raise NotImplementedError('Наследник не переопределил метод')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -91,7 +91,7 @@ class SportsWalking(Training):
         SportsWalking.
         """
         return ((self.CALORIE_WEIGHT_MULT * self.weight_kg
-                + ((self.get_mean_speed())**2 // self.height_cm)
+                + (self.get_mean_speed()**2 // self.height_cm)
                 * self.CALORIE_SPEED_HEIGHT_MULT * self.weight_kg)
                 * self.duration_hour * self.MIN_IN_HOUR)
 
@@ -127,14 +127,12 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    type_of_activity: dict[str, Type[Training]] = {'SWM': Swimming,
+    type_of_activity: dict[str, type[Training]] = {'SWM': Swimming,
                                                    'RUN': Running,
                                                    'WLK': SportsWalking}
     if workout_type not in type_of_activity:
-        raise ValueError(f'''
-Неизвестный тип тренировки: ['{workout_type}'].
-Допустимые значения: {list(type_of_activity)}.
-                          ''')
+        raise ValueError(f'Неизвестный тип тренировки: "{workout_type}". '
+                         f'Допустимые значения: {list(type_of_activity)}.')
     return type_of_activity[workout_type](*data)
 
 
